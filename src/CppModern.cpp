@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
+#include <string>
 
 using namespace std;
 
@@ -216,6 +218,30 @@ int main() {
 //	use(ph);				// called copy constructor
 //	use(phone());   		// called move constructor
 //	use(std::move(ph)); 	//it will call the move constructor
+
+	/*
+	 * 17. Shared pointers: Smart pointers with reference counting
+	 */
+
+	class book {
+		string title;
+	public:
+		book(string p_title): title(p_title){cout << "Book " << p_title <<" is created";}
+		book() : title("nameless")  {cout << "Book nameless is created";}
+		~book(){cout << "Book" << title << "is destroyed";}
+		void bark(){cout << "Book " << title << "rules!" << endl;}
+	};
+
+	shared_ptr<book> p(new book("Cpp Modern")); //Count = 1
+	{
+		shared_ptr<book> p2 = p; //Count = 2
+		p2->bark();
+	}
+	// Count = 1
+	p->bark();
+	// Count = 0
+
+	shared_ptr<book> bo = make_shared<book>("Shared pointers book"); //faster and safer way to create a smart pointer
 
 
 	return 0;
